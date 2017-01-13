@@ -1,0 +1,68 @@
+package infosys.XML;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
+/**
+*
+*@author LaViny
+*用java来创建一个xml文件。
+*/
+public class CreateXML {
+
+	public static void main(String[] args) {
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		try {
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			Document doc = db.newDocument();
+			//创建根节点
+			Element root = doc.createElement("persons");
+			//添加到doc中 作为根节点
+			doc.appendChild(root);
+			//创建子节点
+			for(int i=0; i<10; i++){
+			Element person = doc.createElement("person");
+			//添加到doc中作为子节点
+			root.appendChild(person);
+			//创建person的name标签 并赋值
+			//1.创建标签名
+			Element name = doc.createElement("name");
+			//2.添加标签到子元素
+			person.appendChild(name);
+			//3.创建标签间的文本内容
+			Text text = doc.createTextNode("shannan.hu");
+			//4.将文本内容添加到对应标签。
+			name.appendChild(text);
+			
+			//创建person的age标签并赋值。
+			//步骤同上。
+			Element age = doc.createElement("age");
+			person.appendChild(age);
+			Text text2 = doc.createTextNode("24");
+			age.appendChild(text2);
+			}
+			/*
+			 * 创建完毕后将文本进行输出。
+			 */
+      //新建传输器工厂		
+      TransformerFactory tff = TransformerFactory.newInstance();
+			//新建传输器			
+      Transformer tf = tff.newTransformer();
+			//创建DOMSource对象，封装xml文档对象。		
+      DOMSource ds = new DOMSource(doc);
+			//创建输出流，将文档进行输出。			
+      StreamResult sr = new StreamResult("person.xml");
+			tf.transform(ds, sr);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
